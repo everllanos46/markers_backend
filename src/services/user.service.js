@@ -28,8 +28,8 @@ export default class UserService extends BaseService {
   }
 
   async add(userToAdd) {
-    const userValidated = this.validarUsuario(userToAdd);
-    if (!userValidated) {
+    const userValidated = await this.validarUsuario(userToAdd);
+    if (userValidated) {
       const user = await _userRepository.create(userValidated);
       return user;
     }
@@ -44,7 +44,7 @@ export default class UserService extends BaseService {
     const userFind = await _userRepository.getUserByUserName(userToAdd.usern);
     const emailFind = await _userRepository.getUserByEmail(userToAdd.email);
 
-    if (!userFind || !emailFind) {
+    if (userFind || emailFind) {
       return null;
     }
     return userToAdd;

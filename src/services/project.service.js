@@ -40,9 +40,14 @@ export default class ProjectService extends BaseService {
     }
   }
 
-  async getByYear(year) {
-    const project = await _projectRepository.filterByYear(year);
-    return project;
+  async getByYear(yearToFilter) {
+    const project = await _projectRepository.get();
+    const projectsFilters = project.filter(item=>{
+      const date = new Date(item.date);
+      const year = date.getFullYear();
+      return year === yearToFilter;
+    })
+    return projectsFilters;
   }
 
   async filterByYear(projectToAdd) {
